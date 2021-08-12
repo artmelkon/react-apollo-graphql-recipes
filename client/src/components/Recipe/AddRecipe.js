@@ -12,7 +12,6 @@ const initialState = {
   name: "",
   instructions: "",
   category: "Breakfast",
-  imageUrl: "",
   description: "",
   username: "",
 };
@@ -31,29 +30,30 @@ class AddRecipe extends React.Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
-    this.setState({ [name]: value }, () => console.log(name, ": ", value));
+    this.setState({ [name]: value });
   };
 
   handleSubmit = (event, addRecipe) => {
     event.preventDefault();
     addRecipe().then(({ data }) => {
-      console.log(data);
       this.clearState();
       this.props.history.push("/");
     });
   };
 
-  updateCache = (cache, {data: {addRecipe}}) => {
+  updateCache = async (cache, { data: { addRecipe } }) => {
     const { getAllRecipes } = cache.readQuery({ query: GET_ALL_RECIPES });
-    console.log('get query ', getAllRecipes);
-    console.log('from cache ', addRecipe);
+    console.log("get query ", getAllRecipes);
+    console.log("from cache ", addRecipe);
 
-    cache.writeQuery({
-      query: GET_ALL_RECIPES,
-      data: {
-        getAllRecipes: [addRecipe, ...getAllRecipes]
-      }
-    })
+    try {
+      cache.writeQuery({
+        query: GET_ALL_RECIPES,
+        data: {
+          getAllRecipes: [addRecipe, ...getAllRecipes],
+        },
+      });
+    } catch (err) { console.log(err)}
   };
 
   validateForm = () => {
@@ -64,8 +64,7 @@ class AddRecipe extends React.Component {
   };
 
   render() {
-    const { name, category, description, imageUrl, instructions, username } =
-      this.state;
+    const { name, category, description, instructions, username } = this.state;
 
     return (
       <Mutation
@@ -74,7 +73,6 @@ class AddRecipe extends React.Component {
           name,
           category,
           description,
-          imageUrl,
           instructions,
           username,
         }}
@@ -83,7 +81,6 @@ class AddRecipe extends React.Component {
         {(addRecipe, { data, loading, error }) => {
           if (loading) return <p>Loading...</p>;
           if (error) return <p>Errpr!</p>;
-          console.log(data);
           return (
             <div className="App">
               <h2 className="App">Add Recipe</h2>
@@ -110,21 +107,6 @@ class AddRecipe extends React.Component {
                   value={description}
                   onChange={this.handleChange}
                   placeholder="Description"
-                />
-                {/* <FormInput
-                  type="text"
-                  name="imageUrl"
-                  // value={imageUrl}
-                  placeholder="Add Image"
-                  onChange={this.handleChange}
-                /> */}
-                <FormInput
-                  type="file"
-                  name="imageUrl"
-                  // value={imageUrl}
-                  placeholder="Add Image"
-                  onChange={this.handleChange}
-                  accept=".psd, .tif, .tiff"
                 />
                 <textarea
                   name="instructions"

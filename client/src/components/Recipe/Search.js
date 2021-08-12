@@ -1,16 +1,22 @@
 import React from "react";
 import { ApolloConsumer } from "@apollo/client";
-import { Link } from "react-router-dom";
 
 import FormInput from "../FormInput/FormInput.component";
+import SearchItem from './SearchItem';
 import { SEARCH_RECIPES } from "../../queries";
 
 class Search extends React.Component {
-  handleChange = (data) => {
-    console.log(data);
+  state = {
+    searchResults: [],
+  };
+  handleChange = ({ searchRecipes }) => {
+    this.setState({ searchResults: searchRecipes }, () =>
+      console.log(searchRecipes)
+    );
   };
 
   render() {
+    const { searchResults } = this.state;
     return (
       <ApolloConsumer>
         {(client) => (
@@ -28,13 +34,8 @@ class Search extends React.Component {
               placeholder="Search for recipoes"
             />
             <ul>
-              {[].map((recipe) => (
-                <li key={recipe._id}>
-                  <Link to={`/recipes/${recipe._id}`}>
-                    <h4>{recipe.name}</h4>
-                  </Link>
-                  <p>{recipe.likes}</p>
-                </li>
+              {searchResults.map((recipe) => (
+                <SearchItem key={recipe._id} {...recipe} />
               ))}
             </ul>
           </div>

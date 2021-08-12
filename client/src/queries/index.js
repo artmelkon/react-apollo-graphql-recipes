@@ -7,20 +7,36 @@ export const GET_ALL_RECIPES = gql`
       _id
       name
       category
+      description
+      username
     }
   }
 `;
 
-export const GET_CURRENT_USER = gql `
+export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
       username
       email
+      favorites {
+        _id
+        name
+      }
       joinDate
     }
   }
 `;
 
+export const GET_USER_RECIPES = gql`
+  query GetUserRecipes($username: String!) {
+    getUserRecipes(username: $username) {
+      _id
+      name
+      likes
+      createdDate
+    }
+  }
+`;
 export const GET_RECIPE = gql`
   query GetRecipe($_id: ID!) {
     getRecipe(_id: $_id) {
@@ -47,26 +63,28 @@ export const SEARCH_RECIPES = gql`
 
 /* Recipes Mutation */
 export const ADD_RECIPE = gql`
-  mutation ($name: String!
+  mutation (
+    $name: String!
     $description: String!
     $category: String
     $instructions: String!
-    $imageUrl: String!
-    $username: String) {
-    addRecipe(name: $name
+    $username: String
+  ) {
+    addRecipe(
+      name: $name
       description: $description
       category: $category
       instructions: $instructions
-      imageUrl: $imageUrl
-      username: $username) {
+      username: $username
+    ) {
       _id
       name
       category
       description
       instructions
-      imageUrl
       likes
-      username    }
+      username
+    }
   }
 `;
 
@@ -84,6 +102,14 @@ export const SIGNIN_USER = gql`
   mutation SigninUser($username: String!, $password: String!) {
     signinUser(username: $username, password: $password) {
       token
+    }
+  }
+`;
+
+export const DELETE_USER_RECIPE = gql`
+  mutation DeletUserRecipe($_id: ID!) {
+    deleteUserRecipe(_id: $_id) {
+      _id
     }
   }
 `;

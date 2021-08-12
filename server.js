@@ -9,15 +9,14 @@ const Recipe = require("./models/Recipe");
 
 const { typeDefs } = require("./graphql/schema");
 const { resolvers } = require("./graphql/resolvers");
-const schema = makeExecutableSchema({ typeDefs, resolvers});
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const app = express();
 
 const crosOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
   credentials: true,
 };
-app.use(cors(crosOptions));
 
 /* Set up JWT authentication middleware */
 /* Set JWT authentication middleware */
@@ -25,7 +24,7 @@ app.use(async (req, res, next) => {
   const isToken = req.headers.authorization;
   // console.log("client token ", typeof isToken);
 
-  if (isToken === '') {
+  if (isToken === "") {
     console.log("status 400");
     // return;
   } else if (typeof isToken === "string") {
@@ -42,15 +41,20 @@ app.use(async (req, res, next) => {
   next();
 });
 
-const server = new ApolloServer({
-  schema,
-  context: ({ req }) => {
-    const user = req.currentUser || "";
-    return { User, Recipe, currentUser: user };
-  },
-});
+const startServer = async function() {
+  const server = new ApolloServer({
+    schema,
+    context: ({ req }) => {
+      const user = req.currentUser || "";
+      return { User, Recipe, currentUser: user };
+    },
+  });
+  await server.start();
+  server.applyMiddleware({ app });
+  app.use(cors(crosOptions));
 
-server.applyMiddleware({ app });
+  /* connecting database */
+  require("./utils/db_connect")(app);
+}
 
-/* connecting database */
-require("./utils/db_connect")(app);
+startServer();

@@ -11,7 +11,6 @@ exports.typeDefs = gql`
     category: String!
     description: String!
     instructions: String!
-    imageUrl: String!
     likes: Int
     username: String
     createdDate: String
@@ -39,6 +38,7 @@ exports.typeDefs = gql`
   type RootQuery {
     getUsers: [User!]!
     getCurrentUser: User
+    getUserRecipes(username: String!): [Recipe]
     getRecipe(_id: ID!): Recipe!
     getAllRecipes: [Recipe]
     searchRecipes(searchTerm: String): [Recipe]
@@ -49,13 +49,13 @@ exports.typeDefs = gql`
       name: String!
       description: String!
       category: String
-      imageUrl: String!
       instructions: String!
       username: String
     ): Recipe
     signupUser(username: String!, email: String!, password: String!): Token
     signinUser(username: String!, password: String!): Token
     signinGoogle(email: String!): User
+    deleteUserRecipe(_id: ID!): Recipe
   }
 
   schema {
