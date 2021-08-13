@@ -29,12 +29,12 @@ class SignUp extends React.Component {
   handleSubmit = async (event, signupUser) => {
     event.preventDefault();
 
-    signupUser().then(async ({data}) => {
+    signupUser().then(async ({ data }) => {
       // console.log(data);
-      localStorage.setItem('token', data.signupUser.token);
-      await this.props.refetch()
+      localStorage.setItem("token", data.signupUser.token);
+      await this.props.refetch();
       this.clearState();
-      this.props.history.push('/');
+      this.props.history.push("/");
     });
   };
 
@@ -109,4 +109,4 @@ class SignUp extends React.Component {
   }
 }
 
-export default SignUp;
+export default withRouter(SignUp);
