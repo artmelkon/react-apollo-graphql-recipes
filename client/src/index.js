@@ -22,7 +22,7 @@ import SignUp from "./components/Auth/SignUp";
 import Search from "./components/Recipe/Search";
 import AddRecipe from "./components/Recipe/AddRecipe";
 import Profile from "./components/Profile/Profile";
-import RecipePage from './pages/Recipe/RecipePage';
+import RecipePage from "./pages/Recipe/RecipePage";
 
 import "./index.css";
 
@@ -37,7 +37,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -56,8 +56,11 @@ const Root = ({ refetch, session }) => (
         <Route path="/search" component={Search} />
         <Route path="/signin" render={() => <SignIn refetch={refetch} />} />
         <Route path="/signup" render={() => <SignUp refetch={refetch} />} />
-        <Route path="/recipe/add" render={() => <AddRecipe session={session} />} />
-        <Route path="/recipe/:id" component={RecipePage} />
+        <Route
+          path="/recipe/add"
+          render={() => <AddRecipe session={session} />}
+        />
+        <Route path="/recipe/:_id" component={RecipePage} />
         <Route path="/profile" render={() => <Profile session={session} />} />
         <Redirect to="/" />
       </Switch>

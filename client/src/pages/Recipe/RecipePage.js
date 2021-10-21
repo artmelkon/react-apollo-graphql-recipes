@@ -3,12 +3,12 @@ import { withRouter } from "react-router-dom";
 import { Query } from "@apollo/client/react/components";
 
 import { GET_RECIPE } from "../../queries";
+import LikeRecipe from "../../components/Recipe/LikeRecipe";
 
 const RecipePage = ({ match }) => {
-  const { id } = match.params;
-  console.log(id);
+  const { _id } = match.params;
   return (
-    <Query query={GET_RECIPE} variables={{ _id: id }}>
+    <Query query={GET_RECIPE} variables={{ _id }}>
       {({ data, loading, error }) => {
         if (loading) return <p>Losding...</p>;
         if (error) return <p>Error</p>;
@@ -20,7 +20,7 @@ const RecipePage = ({ match }) => {
             <p>Instructions: {data.getRecipe.instructions}</p>
             <p>Likes: {data.getRecipe.likes}</p>
             <p>Created by: {data.getRecipe.username}</p>
-            <button>Like</button>
+            <LikeRecipe _id={_id} />
           </div>
         );
       }}

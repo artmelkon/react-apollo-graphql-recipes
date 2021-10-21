@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Query, Mutation } from "@apollo/client/react/components";
+import _ from "lodash";
 
 import { GET_USER_RECIPES, DELETE_USER_RECIPE } from "../../queries";
 
@@ -23,7 +24,7 @@ const UserRecipes = ({ username }) => {
           <div>
             <h3>Your Recipes</h3>
             <ul>
-              {data.getUserRecipes.map((recipe) => (
+              {_.map(data.getUserRecipes, (recipe) => (
                 <li key={recipe._id}>
                   <Link to={`/recipe/${recipe._id}`}>
                     <h5>{recipe.name}</h5>
@@ -37,7 +38,7 @@ const UserRecipes = ({ username }) => {
                       return (
                         <p
                           className="delete-button"
-                          onClick={() => handleDelet(deleteUserRecipe)}
+                          onClick={handleDelet.bind(null, deleteUserRecipe)}
                         >
                           X
                         </p>
