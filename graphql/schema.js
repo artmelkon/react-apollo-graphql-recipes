@@ -57,6 +57,7 @@ exports.typeDefs = gql`
     signinGoogle(email: String!): User
     deleteUserRecipe(_id: ID!): Recipe
     likeRecipe(_id: ID!, username: String!): Recipe
+    unlikeRecipe(_id: ID!, username: String!): Recipe
   }
 
   schema {

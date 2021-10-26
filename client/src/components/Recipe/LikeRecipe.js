@@ -3,7 +3,7 @@ import { Mutation } from "@apollo/client/react/components";
 import _ from "lodash";
 
 import withSession from "../withSession";
-import { LIKE_RECIPE, GET_RECIPE } from "../../queries";
+import { LIKE_RECIPE, UNLIKE_RECIPE, GET_RECIPE } from "../../queries";
 
 const LikeRecipe = (props) => {
   const [currentState, setCurrentState] = useState({
@@ -29,7 +29,7 @@ const LikeRecipe = (props) => {
   //   return handleLike(likeRecipe)
   // };
 
-  const handleLike = (likeRecipe) => {
+  const handleLike = (likeRecipe, unlikeRecipe) => {
     const { liked } = currentState;
     console.log("liked ", liked);
     if (!liked) {
@@ -43,7 +43,12 @@ const LikeRecipe = (props) => {
     } else {
       // unlike function will go here
       console.log("unlike recipe");
+      unlikeRecipe().then(async ({ data }) => {
+        console.log(data);
+        await props.refetch();
+      });
     }
+    setCurrentState({ ...currentState, liked: !currentState.liked });
   };
 
   const updateLike = (client, { data: { likeRecipe } }) => {
@@ -62,24 +67,44 @@ const LikeRecipe = (props) => {
     });
   };
 
+  const updateUnlike = (client, { data: { unlikeRecipe } }) => {
+    const { _id } = props;
+    const { getRecipe } = client.readQuery({
+      query: GET_RECIPE,
+      variables: { _id },
+    });
+
+    client.writeQuery({
+      query: GET_RECIPE,
+      variables: { _id },
+      data: { getRecipe: { ...getRecipe, likes: unlikeRecipe.likes - 1 } },
+    });
+  };
+
   const { liked, username } = currentState;
   const { _id } = props;
   console.log("user id ", _id);
   return (
-    <Mutation mutation={UNLIKE_RECIPE} variables={{_id, username}}>
-      <Mutation
-        mutation={LIKE_RECIPE}
-        variables={{ _id, username }}
-        update={updateLike}
-      >
-        {(likeRecipe) =>
-          username && (
-            <button onClick={() => handleLike(likeRecipe)}>
-              {liked ? "Liked" : "Like"}
-            </button>
-          )
-        }
-      </Mutation>
+    <Mutation
+      mutation={UNLIKE_RECIPE}
+      variables={{ _id, username }}
+      update={updateUnlike}
+    >
+      {(unlikeRecipe) => (
+        <Mutation
+          mutation={LIKE_RECIPE}
+          variables={{ _id, username }}
+          update={updateLike}
+        >
+          {(likeRecipe) =>
+            username && (
+              <button onClick={() => handleLike(likeRecipe, unlikeRecipe)}>
+                {liked ? "Unlike" : "Like"}
+              </button>
+            )
+          }
+        </Mutation>
+      )}
     </Mutation>
   );
 };
