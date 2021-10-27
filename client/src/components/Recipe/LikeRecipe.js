@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useC } from "react";
+import React, { useState, useEffect } from "react";
 import { Mutation } from "@apollo/client/react/components";
 import _ from "lodash";
 
@@ -23,12 +23,6 @@ const LikeRecipe = (props) => {
     }
   }, [props]);
 
-  // const handleClick = (likeRecipe) => {
-  //   setCurrentState({ ...currentState, liked: !currentState.liked });
-
-  //   return handleLike(likeRecipe)
-  // };
-
   const handleLike = (likeRecipe, unlikeRecipe) => {
     const { liked } = currentState;
     console.log("liked ", liked);
@@ -41,7 +35,6 @@ const LikeRecipe = (props) => {
         })
         .catch((err) => console.error(err));
     } else {
-      // unlike function will go here
       console.log("unlike recipe");
       unlikeRecipe().then(async ({ data }) => {
         console.log(data);
