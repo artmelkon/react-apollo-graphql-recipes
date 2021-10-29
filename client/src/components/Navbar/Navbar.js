@@ -1,7 +1,7 @@
-import React, {Fragment} from "react";
+import React, { Fragment } from "react";
 import { NavLink } from "react-router-dom";
 
-import SignOut from '../Auth/SignOut';
+import SignOut from "../Auth/SignOut";
 // import { auth } from '../../FireBase/FireBase.utils'; // temporary off for google OAouth
 import Logo from "../../assets/img/gp-color-logo.png";
 
@@ -13,7 +13,6 @@ const Navbar = ({ session }) => (
       <NavbarUnAuth />
     )}
   </nav>
-
 );
 
 const NavbarAuth = ({ session }) => (
@@ -43,7 +42,14 @@ const NavbarAuth = ({ session }) => (
         <SignOut />
       </li>
     </ul>
-    <h4>Welcom, <b>{session.getCurrentUser.username.replace(/\b\w/g, l => l.toUpperCase())}</b></h4>
+    <h4>
+      Welcome,&nbsp;
+      <b>
+        {session.getCurrentUser.username.replace(/\b\w/g, (l) =>
+          l.toUpperCase()
+        )}
+      </b>
+    </h4>
   </Fragment>
 );
 

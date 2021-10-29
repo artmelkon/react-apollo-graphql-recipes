@@ -5,6 +5,7 @@ import { Mutation } from "@apollo/client/react/components";
 import FormInput from "../FormInput/FormInput.component";
 import CustomButton from "../CustomButton/CustomButton.component";
 import Error from "../Error";
+import withAuth from "../Auth/withAuth";
 
 import { ADD_RECIPE, GET_ALL_RECIPES } from "../../queries";
 
@@ -53,7 +54,9 @@ class AddRecipe extends React.Component {
           getAllRecipes: [addRecipe, ...getAllRecipes],
         },
       });
-    } catch (err) { console.log(err)}
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   validateForm = () => {
@@ -117,7 +120,7 @@ class AddRecipe extends React.Component {
                 <CustomButton
                   type="submit"
                   disabled={loading || this.validateForm()}
-                  className="button-primery"
+                  className="button-primary"
                 >
                   Submit
                 </CustomButton>
@@ -131,4 +134,5 @@ class AddRecipe extends React.Component {
   }
 }
 
-export default withRouter(AddRecipe);
+export default withAuth(session => session && session.getCurrentUser)(withRouter(AddRecipe));
+// export default withRouter(AddRecipe);

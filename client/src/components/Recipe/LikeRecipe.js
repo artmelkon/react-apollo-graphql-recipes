@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Mutation } from "@apollo/client/react/components";
 import _ from "lodash";
 
@@ -27,17 +27,17 @@ const LikeRecipe = (props) => {
     const { liked } = currentState;
     console.log("liked ", liked);
     if (!liked) {
-      console.log("true liked ", liked);
+      // console.log("true liked ", liked);
       likeRecipe()
         .then(async ({ data }) => {
-          console.log("data handleLike", data);
+          // console.log("data handleLike", data);
           await props.refetch();
         })
         .catch((err) => console.error(err));
     } else {
-      console.log("unlike recipe");
+      // console.log("unlike recipe");
       unlikeRecipe().then(async ({ data }) => {
-        console.log(data);
+        // console.log(data);
         await props.refetch();
       });
     }

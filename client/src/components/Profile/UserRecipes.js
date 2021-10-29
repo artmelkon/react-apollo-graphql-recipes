@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 import { Query, Mutation } from "@apollo/client/react/components";
 import _ from "lodash";
 
-import { GET_USER_RECIPES, DELETE_USER_RECIPE } from "../../queries";
+import {
+  GET_USER_RECIPES,
+  DELETE_USER_RECIPE,
+  GET_ALL_RECIPES,
+  GET_CURRENT_USER,
+} from "../../queries";
+import withAuth from '../Auth/withAuth';
 
 const UserRecipes = ({ username }) => {
-  const handleDelet = (deleteUserRecipe) => {
+  const handleDelete = (deleteUserRecipe) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this recipe?"
     );
@@ -33,14 +39,35 @@ const UserRecipes = ({ username }) => {
                   <Mutation
                     mutation={DELETE_USER_RECIPE}
                     variables={{ _id: recipe._id }}
+                    refetchQueries={() => [
+                      { query: GET_ALL_RECIPES},
+                      { query: GET_CURRENT_USER, variables: { username }  },
+                    ]}
+                    update={(client, { data: { deleteUserRecipe } }) => {
+                      console.log(client, data);
+                      const { getUserRecipes } = client.readQuery({
+                        query: GET_USER_RECIPES,
+                        variables: { username },
+                      });
+
+                      client.writeQuery({
+                        query: GET_USER_RECIPES,
+                        variables: { username },
+                        data: {
+                          getUserRecipes: getUserRecipes.filter(
+                            (recipe) => recipe._id !== deleteUserRecipe._id
+                          ),
+                        },
+                      });
+                    }}
                   >
-                    {(deleteUserRecipe) => {
+                    {(deleteUserRecipe, attrs) => {
                       return (
                         <p
                           className="delete-button"
-                          onClick={handleDelet.bind(null, deleteUserRecipe)}
+                          onClick={handleDelete.bind(null, deleteUserRecipe)}
                         >
-                          X
+                          {attrs.loading ? "deleting..." : "X"}
                         </p>
                       );
                     }}
@@ -54,4 +81,4 @@ const UserRecipes = ({ username }) => {
     </Query>
   );
 };
-export default UserRecipes;
+export default withAuth(session => session && session.getCurrentUser)(UserRecipes);

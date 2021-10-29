@@ -87,25 +87,6 @@ export const ADD_RECIPE = gql`
     }
   }
 `;
-
-/* User Query */
-/* User Mutation */
-export const SIGNUP_USER = gql`
-  mutation SignupUser($username: String!, $email: String!, $password: String!) {
-    signupUser(username: $username, email: $email, password: $password) {
-      token
-    }
-  }
-`;
-
-export const SIGNIN_USER = gql`
-  mutation SigninUser($username: String!, $password: String!) {
-    signinUser(username: $username, password: $password) {
-      token
-    }
-  }
-`;
-
 export const LIKE_RECIPE = gql`
   mutation LikeRecipe($_id: ID!, $username: String!) {
     likeRecipe(_id: $_id, username: $username) {
@@ -114,8 +95,7 @@ export const LIKE_RECIPE = gql`
     }
   }
 `;
-
-export const UNLIKE_RECIPE = gql `
+export const UNLIKE_RECIPE = gql`
   mutation UnlikeRecipe($_id: ID!, $username: String!) {
     unlikeRecipe(_id: $_id, username: $username) {
       _id
@@ -130,3 +110,21 @@ export const DELETE_USER_RECIPE = gql`
     }
   }
 `;
+
+/* User Query */
+/* User Mutation */
+export const SIGNUP_USER = gql`
+  mutation SignupUser($username: String!, $email: String!, $password: String!) {
+    signupUser(username: $username, email: $email, password: $password) {
+      token
+    }
+  }
+`;
+export const SIGNIN_USER = gql`
+  mutation SigninUser($username: String!, $password: String!) {
+    signinUser(username: $username, password: $password) {
+      token
+    }
+  }
+`;
+
