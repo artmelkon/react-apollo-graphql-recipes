@@ -29,7 +29,7 @@ import "./index.css";
 const httpLink = createHttpLink({
   uri: [
     "http://localhost:4444/graphql",
-    "https://react-apollographql-recipes.heroku.com/graphql",
+    "https://react-apollographql-recipes.herokuapp.com//graphql",
   ],
 });
 
