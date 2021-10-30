@@ -60,7 +60,9 @@ const startServer = async function() {
   });
   await server.start();
   server.applyMiddleware({ app });
-  app.use(cors(crosOptions));
+
+  /* commented out for Heroku deployment */
+  // app.use(cors(crosOptions));
 
   /* connecting database */
   require("./utils/db_connect")(app);
