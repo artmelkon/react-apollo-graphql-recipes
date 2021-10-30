@@ -27,7 +27,7 @@ import RecipePage from "./pages/Recipe/RecipePage";
 import "./index.css";
 
 const httpLink = createHttpLink({
-  uri: "https://react-apollographql-recipes.herokuapp.com//graphql",
+  uri: "https://react-apollographql-recipes.herokuapp.com/graphql",
 });
 // const httpLink = createHttpLink({
 //   uri: [ "https://react-apollographql-recipes.herokuapp.com//graphql" });
