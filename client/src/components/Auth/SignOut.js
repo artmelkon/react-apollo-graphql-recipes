@@ -13,7 +13,7 @@ const handleSignout = (client, history) => {
 const SignOut = ({ history }) => (
   <ApolloConsumer>
     {client => {
-      {/* console.log("logout client ", client); */}
+      // console.log("logout client ", client);
       return (
         <CustomButton onClick={() => handleSignout(client, history)}>
           Sing Out

@@ -4,7 +4,6 @@ import { Query } from "@apollo/client/react/components";
 
 import { GET_RECIPE } from "../../queries";
 import LikeRecipe from "../../components/Recipe/LikeRecipe";
-import withAuth from '../../components/Auth/withAuth';
 
 const RecipePage = ({ match }) => {
   const { _id } = match.params;
@@ -29,4 +28,4 @@ const RecipePage = ({ match }) => {
   );
 };
 
-export default withAuth(session => session && session.getCurrentUser)(withRouter(RecipePage));
+export default withRouter(RecipePage);

@@ -15,8 +15,8 @@ const LikeRecipe = (props) => {
     if (props.session.getCurrentUser) {
       const { username, favorites } = props.session.getCurrentUser;
       const { _id } = props;
-      console.log("current user: ", username);
-      console.log("current favorites: ", favorites);
+      // console.log("current user: ", username);
+      // console.log("current favorites: ", favorites);
       const prevLiked =
         _.findIndex(favorites, (favorite) => favorite._id === _id) > -1;
       setCurrentState({ liked: prevLiked, username });
@@ -25,19 +25,14 @@ const LikeRecipe = (props) => {
 
   const handleLike = (likeRecipe, unlikeRecipe) => {
     const { liked } = currentState;
-    console.log("liked ", liked);
     if (!liked) {
-      // console.log("true liked ", liked);
       likeRecipe()
         .then(async ({ data }) => {
-          // console.log("data handleLike", data);
           await props.refetch();
         })
         .catch((err) => console.error(err));
     } else {
-      // console.log("unlike recipe");
       unlikeRecipe().then(async ({ data }) => {
-        // console.log(data);
         await props.refetch();
       });
     }
@@ -76,7 +71,6 @@ const LikeRecipe = (props) => {
 
   const { liked, username } = currentState;
   const { _id } = props;
-  console.log("user id ", _id);
   return (
     <Mutation
       mutation={UNLIKE_RECIPE}

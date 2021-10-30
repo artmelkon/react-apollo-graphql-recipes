@@ -1,4 +1,5 @@
 import { gql } from "apollo-boost";
+import { recipeFragments } from "./fragments";
 
 /* Recipes Queries */
 export const GET_ALL_RECIPES = gql`
@@ -8,11 +9,11 @@ export const GET_ALL_RECIPES = gql`
       name
       category
       description
+      likes
       username
     }
   }
 `;
-
 export const GET_CURRENT_USER = gql`
   query {
     getCurrentUser {
@@ -26,7 +27,6 @@ export const GET_CURRENT_USER = gql`
     }
   }
 `;
-
 export const GET_USER_RECIPES = gql`
   query GetUserRecipes($username: String!) {
     getUserRecipes(username: $username) {
@@ -40,17 +40,11 @@ export const GET_USER_RECIPES = gql`
 export const GET_RECIPE = gql`
   query GetRecipe($_id: ID!) {
     getRecipe(_id: $_id) {
-      _id
-      name
-      category
-      description
-      instructions
-      likes
-      username
+      ...CompleteRecipe
     }
   }
+  ${recipeFragments.recipe}
 `;
-
 export const SEARCH_RECIPES = gql`
   query SearchRecipe($searchTerm: String) {
     searchRecipes(searchTerm: $searchTerm) {
@@ -77,31 +71,26 @@ export const ADD_RECIPE = gql`
       instructions: $instructions
       username: $username
     ) {
-      _id
-      name
-      category
-      description
-      instructions
-      likes
-      username
+      ...CompleteRecipe
     }
   }
+  ${recipeFragments.recipe}
 `;
 export const LIKE_RECIPE = gql`
   mutation LikeRecipe($_id: ID!, $username: String!) {
     likeRecipe(_id: $_id, username: $username) {
-      _id
-      likes
+      ...LikeRecipe
     }
   }
+  ${recipeFragments.like}
 `;
 export const UNLIKE_RECIPE = gql`
   mutation UnlikeRecipe($_id: ID!, $username: String!) {
     unlikeRecipe(_id: $_id, username: $username) {
-      _id
-      likes
+      ...LikeRecipe
     }
   }
+  ${recipeFragments.like}
 `;
 export const DELETE_USER_RECIPE = gql`
   mutation DeletUserRecipe($_id: ID!) {
@@ -116,15 +105,17 @@ export const DELETE_USER_RECIPE = gql`
 export const SIGNUP_USER = gql`
   mutation SignupUser($username: String!, $email: String!, $password: String!) {
     signupUser(username: $username, email: $email, password: $password) {
-      token
+      ...TokenUser
     }
   }
+  ${recipeFragments.token}
 `;
 export const SIGNIN_USER = gql`
   mutation SigninUser($username: String!, $password: String!) {
     signinUser(username: $username, password: $password) {
-      token
+      ...TokenUser
     }
   }
+  ${recipeFragments.token}
 `;
 

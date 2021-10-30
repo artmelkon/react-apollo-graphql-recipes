@@ -9,7 +9,6 @@ import {
   GET_ALL_RECIPES,
   GET_CURRENT_USER,
 } from "../../queries";
-import withAuth from '../Auth/withAuth';
 
 const UserRecipes = ({ username }) => {
   const handleDelete = (deleteUserRecipe) => {
@@ -17,7 +16,7 @@ const UserRecipes = ({ username }) => {
       "Are you sure you want to delete this recipe?"
     );
     if (confirmDelete) {
-      deleteUserRecipe().then(({ data }) => console.log(data));
+      deleteUserRecipe()
     }
   };
   return (
@@ -25,7 +24,7 @@ const UserRecipes = ({ username }) => {
       {({ loading, error, data }) => {
         if (loading) return <p>Loading...</p>;
         if (error) return <p>Error</p>;
-        console.log(data);
+        // console.log(data);
         return (
           <div>
             <h3>Your Recipes</h3>
@@ -44,7 +43,7 @@ const UserRecipes = ({ username }) => {
                       { query: GET_CURRENT_USER, variables: { username }  },
                     ]}
                     update={(client, { data: { deleteUserRecipe } }) => {
-                      console.log(client, data);
+                      // console.log(client, data);
                       const { getUserRecipes } = client.readQuery({
                         query: GET_USER_RECIPES,
                         variables: { username },
@@ -81,4 +80,4 @@ const UserRecipes = ({ username }) => {
     </Query>
   );
 };
-export default withAuth(session => session && session.getCurrentUser)(UserRecipes);
+export default UserRecipes;

@@ -10,9 +10,7 @@ class Search extends React.Component {
     searchResults: [],
   };
   handleChange = ({ searchRecipes }) => {
-    this.setState({ searchResults: searchRecipes }, () =>
-      console.log(searchRecipes)
-    );
+    this.setState({ searchResults: searchRecipes });
   };
 
   render() {

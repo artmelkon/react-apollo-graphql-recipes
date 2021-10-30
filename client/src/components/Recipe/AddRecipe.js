@@ -25,7 +25,7 @@ class AddRecipe extends React.Component {
   };
 
   componentDidMount() {
-    console.log(this.props.session.getCurrentUser.username);
+    // console.log(this.props.session.getCurrentUser.username);
     this.setState({ username: this.props.session.getCurrentUser.username });
   }
 
@@ -44,8 +44,8 @@ class AddRecipe extends React.Component {
 
   updateCache = async (cache, { data: { addRecipe } }) => {
     const { getAllRecipes } = cache.readQuery({ query: GET_ALL_RECIPES });
-    console.log("get query ", getAllRecipes);
-    console.log("from cache ", addRecipe);
+    // console.log("get query ", getAllRecipes);
+    // console.log("from cache ", addRecipe);
 
     try {
       cache.writeQuery({
@@ -55,7 +55,7 @@ class AddRecipe extends React.Component {
         },
       });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -135,4 +135,3 @@ class AddRecipe extends React.Component {
 }
 
 export default withAuth(session => session && session.getCurrentUser)(withRouter(AddRecipe));
-// export default withRouter(AddRecipe);

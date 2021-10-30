@@ -28,7 +28,7 @@ class SignIn extends React.Component {
     event.preventDefault();
 
     signinUser().then(async ({ data }) => {
-      console.log('login user ', data);
+      // console.log('login user ', data);
       localStorage.setItem("token", data.signinUser.token);
       await this.props.refetch()
       this.clearState();
