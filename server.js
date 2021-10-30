@@ -1,3 +1,4 @@
+const path = require('path')
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const { ApolloServer, makeExecutableSchema } = require("apollo-server-express");
