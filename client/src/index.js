@@ -26,11 +26,12 @@ import RecipePage from "./pages/Recipe/RecipePage";
 
 import "./index.css";
 
-const httpLink = createHttpLink({
-  uri: "https://react-apollographql-recipes.herokuapp.com/graphql",
-});
 // const httpLink = createHttpLink({
-//   uri: [ "https://react-apollographql-recipes.herokuapp.com//graphql" });
+//   uri: "https://react-apollographql-recipes.herokuapp.com/graphql",
+// });
+const httpLink = createHttpLink({
+  uri: "http://localhost:4040/graphql"
+});
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

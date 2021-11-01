@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 require("dotenv").config({ path: "./env/.env" });
 
-const PORT = process.env.PORT || 4444;
+const PORT = process.env.PORT || 4040;
 
 module.exports = async (app) => {
   await mongoose
